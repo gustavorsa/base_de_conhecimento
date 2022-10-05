@@ -1,15 +1,17 @@
-import React, { useState }  from 'react';
+import React, { useContext, useState }  from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { SidebarData } from './SidebarData';
-import { DropDowndata } from './DropDownData';
 import SubMenu from '../sidebar/SubMenu';
 
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as RiIcons from 'react-icons/ri';
+import * as TbIcons from 'react-icons/tb';
 import { IconContext } from 'react-icons';
+
+import { AuthContext } from '../../contexts/auth';
 
 const Nav = styled.div `
     background: #15171c;
@@ -101,10 +103,33 @@ const SideMenuWrap = styled.div `
     width: 100%;
 `
 
+const SidebarLink = styled(Link) `
+    display: flex;
+    color: #e1e9fc;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    list-style: none;
+    height: 60px;
+    text-decoration: none;
+    font-size: 18px;
+
+    &:hover {
+        background: #252831;
+        border-left: 4px solid;
+        cursor: pointer;
+    }
+`
+
+const SidebarLabel = styled.span`
+    margin-left: 16px;
+`
 
 function Sidebar() {
     const [sidebar, setSidebar] = useState(false)
     const [dropmenu, setDropmenu] = useState(false)
+
+    const {authenticate, loading} = useContext(AuthContext);
 
     const menuIcon = { 
         iconClosed: <RiIcons.RiArrowDownSFill />,
@@ -119,8 +144,15 @@ function Sidebar() {
         setDropmenu(!dropmenu)
     }
 
+    const {logout} = useContext(AuthContext)
+
+    const handleLogout = () => {
+        logout()
+    }
+
     return (
         <>
+            {authenticate ? 
             <IconContext.Provider value={{ color: '#fff' }}>
                 <Nav>
                     <NavIcon to="#">
@@ -146,12 +178,23 @@ function Sidebar() {
                 </SidebarNav>
                 <SiderbarMenu dropmenu={dropmenu}>
                     <SideMenuWrap onClick={showDropmenu}>
-                        {DropDowndata.map((item, index) => {
-                                return <SubMenu item={item} key={index}/>
-                        })}
+                        <SidebarLink to="/user">
+                            <div>
+                                <FaIcons.FaUser/>
+                                <SidebarLabel>Meu perfil</SidebarLabel>
+                            </div>
+                        </SidebarLink>
+                        <SidebarLink to="/login" onClick={handleLogout}>
+                            <div>
+                                <TbIcons.TbDoorExit/>
+                                <SidebarLabel>Sair do Sistema</SidebarLabel>
+                            </div>
+                        </SidebarLink>
                     </SideMenuWrap>
                 </SiderbarMenu>
-            </IconContext.Provider>
+            </IconContext.Provider> 
+            : ""
+            }  
         </>
     );
 }

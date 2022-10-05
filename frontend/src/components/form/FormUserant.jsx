@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Button, Form, Input, Row, Col, Checkbox } from 'antd';
 
@@ -17,8 +17,14 @@ const validateMessages = {
 };
 
 const FormUser = () => {
+  const [checkAdmin, setCheckAdmin] = useState(false);
+
   const onFinish = (values) => {
     console.log(values);
+  };
+
+  const onCheckboxChange = (e) => {
+    setCheckAdmin({admin : true});
   };
 
   return (
@@ -31,7 +37,7 @@ const FormUser = () => {
           }}>
         <Col span={24}>
           <Form.Item
-            name={['user', 'name']}
+            name="name"
             label="Nome"
             rules={[
               {
@@ -44,7 +50,7 @@ const FormUser = () => {
         </Col>
         <Col span={24}>
           <Form.Item
-            name={['user', 'email']}
+            name="email"
             label="Email"
             rules={[
               {
@@ -56,25 +62,25 @@ const FormUser = () => {
           </Form.Item>
         </Col>
         <Col span={12}>
-            <Form.Item
-              name={['user', 'password']}
-              label="Senha"
-              rules={[
-                {
-                  required: true,
-                  message: 'Informe sua senha!',
-                },
-              ]}
-              hasFeedback
-            >
-              <Input.Password />
-            </Form.Item>
+        <Form.Item
+        name="password"
+        label="Password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your password!',
+          },
+        ]}
+        hasFeedback
+      >
+        <Input.Password />
+      </Form.Item>
         </Col>
         <Col span={12}>
             <Form.Item
-              name={['user', 'confirm']}
+              name="confirm"
               label="Confirme a Senha"
-              dependencies={['password']}
+              dependencies={['user']}
               hasFeedback
               rules={[
                 {
@@ -95,7 +101,13 @@ const FormUser = () => {
             </Form.Item>
         </Col>
         <Col>
-          <Checkbox>Admi?</Checkbox>
+          <Form.Item
+            name="admin"
+          >
+            <Checkbox checked={checkAdmin} onChange={onCheckboxChange}>
+              Admin?
+            </Checkbox>
+          </Form.Item>
         </Col>
       </Row> 
       <Row justify='end' style={{paddingRight: 20}} gutter={20}>
