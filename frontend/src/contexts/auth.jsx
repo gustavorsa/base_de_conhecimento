@@ -1,42 +1,50 @@
-import Item from "antd/lib/list/Item";
 import React, { createContext, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
+import { api, createSignin, postUser } from "../config/global";
+
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
+    
     useEffect(() => {
         const recoveredUser = localStorage.getItem("user")
+        const token = localStorage.getItem("token")
 
-        if (recoveredUser) {
+        if (recoveredUser && token) {
             setUser(JSON.parse(recoveredUser))
+            api.defaults.headers.Authorization = `Bearer ${token}`
         }
 
         setLoading(false)
     }, []);
 
-    const login = (email, password) => {
-        const loggedUser = {
-            id: "123",
-            email,
-        }
+    const login = async (email, password) => {
+        const response = await createSignin(email, password);
 
-        localStorage.setItem("user", JSON.stringify(loggedUser))
+        const loggedUser = response.data;
+        const token = response.data.token;
 
-        if(password === "123") {
-            setUser({id: "123", email})
-            navigate("/")
-        }
+        localStorage.setItem("user", JSON.stringify(loggedUser));
+        localStorage.setItem("token", token)
+
+        api.defaults.headers.Authorization = `Bearer ${token}`
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+        setUser(loggedUser)
+        navigate("/")
     }
 
     const logout = () => {
-        localStorage.removeItem("user")
-        setUser(null)
-        navigate("/login")
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        setUser(null);
+        navigate("/login");
+        api.defaults.headers.Authorization = null;
+        api.defaults.headers.common['Authorization'] = null;
     }
 
     return (

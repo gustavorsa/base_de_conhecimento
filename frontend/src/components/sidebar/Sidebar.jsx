@@ -129,7 +129,7 @@ function Sidebar() {
     const [sidebar, setSidebar] = useState(false)
     const [dropmenu, setDropmenu] = useState(false)
 
-    const {authenticate, loading} = useContext(AuthContext);
+    const {authenticate} = useContext(AuthContext);
 
     const menuIcon = { 
         iconClosed: <RiIcons.RiArrowDownSFill />,
@@ -178,10 +178,16 @@ function Sidebar() {
                 </SidebarNav>
                 <SiderbarMenu dropmenu={dropmenu}>
                     <SideMenuWrap onClick={showDropmenu}>
-                        <SidebarLink to="/user">
+                        <SidebarLink to="/perfil">
                             <div>
                                 <FaIcons.FaUser/>
                                 <SidebarLabel>Meu perfil</SidebarLabel>
+                            </div>
+                        </SidebarLink>
+                        <SidebarLink to="/adminpage">
+                            <div>
+                                <RiIcons.RiAdminFill/>
+                                <SidebarLabel>Administrador</SidebarLabel>
                             </div>
                         </SidebarLink>
                         <SidebarLink to="/login" onClick={handleLogout}>

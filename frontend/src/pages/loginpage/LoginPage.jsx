@@ -7,7 +7,7 @@ const LoginPage = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const { authenticate, login } = useContext(AuthContext)
+    const { login } = useContext(AuthContext)
 
     const handleSubmit = (e)=> {
         e.preventDefault()
@@ -17,7 +17,6 @@ const LoginPage = () => {
     return (
         <div className="login">
             <h1 className="titl">Login do sistema</h1>
-            <p>{String(authenticate)}</p>
             <form className="form" onSubmit={handleSubmit}>
                 <div className="field">
                     <label htmlFor="email">email</label>

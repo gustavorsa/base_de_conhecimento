@@ -4,16 +4,18 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthContext, AuthProvider } from '../contexts/auth';
 
 import Home from '../pages/home/Home';
-import LoginPage from '../pages/loginpage/LoginPage';
-import Users from '../pages/user/User';
 import Sidebar from '../components/sidebar/Sidebar'
+import Login from '../pages/loginpage/Login';
+import { Loader } from '../components/loading/Loader';
+import AdminPage from '../pages/adminpage/AdminPage';
+import Skeletons from '../components/skeleton/Skeleton';
 
 const AppRoutes = () => {
     const Private = ({children}) => {
         const {authenticate, loading} = useContext(AuthContext);
 
         if (loading) {
-            return <div className="loading">Carregando...</div>
+            return <Loader />
         }
 
         if(!authenticate) {
@@ -28,9 +30,11 @@ const AppRoutes = () => {
             <AuthProvider>
                 <Sidebar />
                     <Routes>
-                        <Route path='/login'  element={<LoginPage />}/>
+                        <Route path='/login'  element={<Login />}/>
+                        <Route path='/skeleton'  element={<Skeletons />}/>
+                        <Route path='/loader'  element={<Loader />}/>
                         <Route exact path='/' element={<Private> <Home /> </Private>} />
-                        <Route path='/user' element={<Private> <Users /> </Private>}/>
+                        <Route path='/adminpage' element={<Private> <AdminPage /> </Private>}/>
                     </Routes>
             </AuthProvider>
         </Router>

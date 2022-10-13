@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Button, Form, Input, Row, Col, Checkbox } from 'antd';
+import { api, baseApiUrll } from '../../config/global';
+import axios from 'axios';
 
 const layout = {
     layout : "vertical"
@@ -18,17 +20,27 @@ const validateMessages = {
 
 const FormUser = () => {
   const [checkAdmin, setCheckAdmin] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("")
 
   const onFinish = (values) => {
-    console.log(values);
+    console.log('values', values);
   };
 
-  const onCheckboxChange = (e) => {
-    setCheckAdmin({admin : true});
-  };
+  const Save = (values) => {
+    const user = values
+    axios.post(`${baseApiUrll}/users`, {user})
+    .then((res) => {
+        console.log(res.msg)
+        })
+    .catch(err => console.log(err))
+    console.log('valores',values)
+  }
 
   return (
-    <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+    <Form {...layout} name="nest-messages" onFinish={Save} validateMessages={validateMessages}>
       <Row gutter={20} style={{
             paddingLeft: 10,
             paddingRight: 10,
@@ -39,6 +51,8 @@ const FormUser = () => {
           <Form.Item
             name="name"
             label="Nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             rules={[
               {
                 required: true,
@@ -52,6 +66,8 @@ const FormUser = () => {
           <Form.Item
             name="email"
             label="Email"
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
             rules={[
               {
                 type: 'email',
@@ -65,6 +81,8 @@ const FormUser = () => {
         <Form.Item
         name="password"
         label="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         rules={[
           {
             required: true,
@@ -80,6 +98,8 @@ const FormUser = () => {
             <Form.Item
               name="confirm"
               label="Confirme a Senha"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               dependencies={['user']}
               hasFeedback
               rules={[
@@ -101,13 +121,14 @@ const FormUser = () => {
             </Form.Item>
         </Col>
         <Col>
-          <Form.Item
-            name="admin"
-          >
-            <Checkbox checked={checkAdmin} onChange={onCheckboxChange}>
-              Admin?
-            </Checkbox>
-          </Form.Item>
+        <Form.Item 
+        name="admin" 
+        valuePropName=""
+        value={checkAdmin}
+        onChange={(e) => setCheckAdmin(e.target.value)}
+        >
+          <Checkbox>Admin?</Checkbox>
+        </Form.Item>
         </Col>
       </Row> 
       <Row justify='end' style={{paddingRight: 20}} gutter={20}>
