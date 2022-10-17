@@ -1,17 +1,17 @@
-import { Button, Form, Input, Row, Col, Checkbox } from 'antd';
-import axios from 'axios';
+import { Button, Form, Input, Row, Col, Checkbox, Table, Space, notification } from 'antd';
+import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components'
-import FormUser from '../../components/form/FormUserant';
+import FormUser from '../../components/form/FormUser';
 import TableUser from '../../components/table/TableUser';
-import { api, baseApiUrll, getUser, postUser, showError } from '../../config/global';
-import { AuthContext, AuthProvider } from '../../contexts/auth';
+import { api, baseApiUrll, getUser} from '../../config/global';
+import Notification from '../../components/notification/Notification';
 
 const Container = styled.div `
     padding: 20px 10px;
 `
 const layout = {
-  layout : "vertical"
+  layout : "vertical",
 };
 
 const validateMessages = {
@@ -28,12 +28,13 @@ number: {
 const AdminPage = () => {
   const [users, setUsers] = useState([])
   const [checkAdmin, setCheckAdmin] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setemail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [massage, setMassage] = useState("")
-  
+  const [name, setName] = useState({});
+  const [email, setemail] = useState({});
+  const [password, setPassword] = useState({});
+  const [confirmPassword, setConfirmPassword] = useState({})
+  const [mode, setMode] = useState('Salvar')
+  const [form, setForm] = useState()
+
   useEffect(() => {
     (async() => {
       const response = await getUser()
@@ -41,33 +42,114 @@ const AdminPage = () => {
     })()
   }, []);
 
-  const response = (values) => {
+  const saveEdit = (values) => {
     const user = values
-    api.post(`${baseApiUrll}/users`, user)
+    const method = (user.id ? api.put : api.post)
+    const id = (user.id ? `/${user.id}`: ``)
+    method(`${baseApiUrll}/users${id}`, user)
     .then(() => {
-      setMassage('Cadastrado com Sucesso')
+      notification.open({
+        message: 'Cadastro De Usuario',
+        description:
+          'Cadastrado realizado com sucesso!',
+      })
+      reset
     })
-    .catch(response => setMassage(response.response.data))
+    .catch((response) => 
+      /*notification.open({
+      message: 'Cadastro De Usuario',
+      description:
+        (response.response.data),
+    })*/ console.log(response))
   }
 
-  const deleteUser = () => {
-    api.delete(`${baseApiUrll}/users/${id}`)
-    .then(() => {
-      setMassage('Cadastrado com Sucesso')
-    })
-    .catch(response => setMassage(response.response.data))
+  const loadUser = () => {
+    useEffect(() => {
+      (async() => {
+        const response = await getUser()
+        setUsers(response.data)
+      })()
+    }, []);
   }
+
+  const remove = () => {
+    const id = users.id
+    api.delete(`${baseApiUrll}/users${id}`)
+    .then(() => {
+      notification.open({
+        message: 'Cadastro De Usuario',
+        description:
+          'Cadastrado realizado com sucesso!',
+      })
+      reset
+    })
+    .catch()
+  }
+
+  const reset = (values) => {
+    values = ''
+    setMode('Salvar')
+    setName(name == '')
+    setemail(e.target.value = '')
+    setPassword(e.target.value = '')
+    setConfirmPassword(e.target.value = '')
+    loadUser
+  }
+
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Nome',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    /*{
+      title: 'CPNJ',
+      dataIndex: 'cnpj',
+      key: 'cnpj',
+      responsive: ['md']
+    },*/
+    {
+      title: 'E-mail',
+      dataIndex: 'email',
+      key: 'email',
+      responsive: ['md']
+    },
+    {
+      title: 'Administrador',
+      key: 'admin',
+      responsive: ['md'],
+      render: (users) => (
+        users.admin == true ? 'Sim' : 'Não'
+      )
+    },
+    {
+      title: 'Opções',
+      key: 'action',
+      render: () => (
+          <Space size="middle">
+            <EditOutlined style={{fontSize: '20px'}}/>
+            <a>Editar</a>
+            <DeleteOutlined style={{color: '#eb2f2f', fontSize: '20px'}}/>
+            <a onClick={() => setMode('Excluir')}>Excluir</a>
+          </Space>
+      ),
+    },
+  ];
 
     return (
       <Container>
-        <Form {...layout} name="nest-messages" onFinish={response} validateMessages={validateMessages}>
+        <Form {...layout} name="nest-messages" onFinish={saveEdit} validateMessages={validateMessages}>
           <Row gutter={20} style={{
                 paddingLeft: 10,
                 paddingRight: 10,
                 margin: 0,
-                maxWidth: 1200
               }}>
-            <Col span={24}>
+            <Col md={12} sm={24} xs={24}>
               <Form.Item
                 name="name"
                 label="Nome"
@@ -79,10 +161,11 @@ const AdminPage = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input 
+                placeholder='Nome do Usuario'/>
               </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col md={12} sm={24} xs={24}>
               <Form.Item
                 name="email"
                 label="Email"
@@ -91,30 +174,31 @@ const AdminPage = () => {
                 rules={[
                   {
                     type: 'email',
+                    required: true,
                   },
                 ]}
               >
-                <Input />
+                <Input placeholder='E-mail do Usuario'/>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col md={12} sm={24} xs={24}>
             <Form.Item
             name="password"
-            label="Password"
+            label="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             rules={[
               {
                 required: true,
-                message: 'Please input your password!',
+                message: 'Informe sua senha!',
               },
             ]}
             hasFeedback
           >
-            <Input.Password />
+            <Input.Password/>
           </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col md={12} sm={24} xs={24}>
                 <Form.Item
                   name="confirmPassword"
                   label="Confirme a Senha"
@@ -154,22 +238,31 @@ const AdminPage = () => {
           <Row justify='end' style={{paddingRight: 20}} gutter={20}>
             <Col>
               <Form.Item>
-                <Button>
+                <Button onClick={() => (setMode('Salvar'), setName(values == ''), setCheckAdmin())}>
                   Cancelar
                 </Button>
               </Form.Item>
             </Col>
             <Col>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Salvar
-                </Button>
+                {(mode == 'Salvar') ? (
+                  <Button type="primary" htmlType="submit" onClick={saveEdit}>
+                    {mode}
+                  </Button>
+                ) : (
+                  <Button type="primary" htmlType="submit" danger onClick={remove}>
+                    {mode}
+                  </Button>
+                )}
               </Form.Item>
             </Col>
           </Row>
         </Form>
-        <p>{massage}</p>
-        <TableUser props={users}/>
+        <Table columns={columns} dataSource={users} style={{
+                paddingLeft: 10,
+                paddingRight: 10,
+                margin: 0,
+              }}/>
       </Container>
     );
 };

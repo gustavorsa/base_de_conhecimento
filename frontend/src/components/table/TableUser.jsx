@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { Space, Table } from 'antd';
 import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
 
-const TableUser = ({props}) => {
+export const TableUser = ({props}) => {
   const columns = [
     {
       title: 'ID',
@@ -30,7 +30,7 @@ const TableUser = ({props}) => {
     {
       title: 'Admin',
       dataIndex: 'admin',
-      key: props.name,
+      key: 'admin',
       responsive: ['md']
     },
     {

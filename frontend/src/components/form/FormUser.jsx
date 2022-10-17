@@ -29,16 +29,6 @@ const FormUser = () => {
     console.log('values', values);
   };
 
-  const Save = (values) => {
-    const user = values
-    axios.post(`${baseApiUrll}/users`, {user})
-    .then((res) => {
-        console.log(res.msg)
-        })
-    .catch(err => console.log(err))
-    console.log('valores',values)
-  }
-
   return (
     <Form {...layout} name="nest-messages" onFinish={Save} validateMessages={validateMessages}>
       <Row gutter={20} style={{

@@ -34,7 +34,7 @@ const Login = () => {
                   <input
                     className={email !== "" ? "has-val input" : "input"}
                     name="email"
-                    type="email"
+                    type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
