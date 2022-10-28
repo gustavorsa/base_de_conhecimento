@@ -23,9 +23,9 @@ export const SidebarData = [
     subNav: [
       {
         title: 'Commerce',
-        path: '/reports/reports1',
+        path: '/Artigos/commerce',
         icon: <IoIcons.IoIosPaper />,
-        cName: 'sub-nav'
+        cName: 'sub-nav',
       },
       {
         title: 'Medicine',

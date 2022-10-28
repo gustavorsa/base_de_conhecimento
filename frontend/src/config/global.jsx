@@ -20,6 +20,14 @@ export const postUser = (values) => {
     return api.post('/users', {values})
 }
 
+export const getArticles = async () => {
+    return api.get("/articles")
+}
+
+export const getCategories = async () => {
+    return api.get("/categories")
+}
+
 export const baseApiUrll = "http://localhost:4000" //está sendo usado na home
 
 export const showError = (e) => {

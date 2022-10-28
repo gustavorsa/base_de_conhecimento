@@ -1,0 +1,11 @@
+.site-tree-search-value {
+    color: #f50;
+  }
+  .draggable-tree {
+    background: #001529;
+    color: #ffff;
+  }
+
+  .draggable-tree svg {
+    color: #ffff;
+  }

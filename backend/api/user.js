@@ -16,13 +16,6 @@ module.exports = app => {
         if(!req.user || !req.user.admin) user.admin = false
 
         try {
-            /*existsOrError(user.name, 'Nome não informado')
-            existsOrError(user.email, 'E-mail não informado')
-            existsOrError(user.password, 'Senha não informada')
-            existsOrError(user.confirmPassword, 'Confirmação de Senha inválida')
-            equalsOrError(user.password, user.confirmPassword,
-                'Senhas não conferem')*/
-
             const userFromDB = await app.db('users')
                 .where({ email: user.email }).first()
             if(!user.id) {
@@ -52,7 +45,7 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('users')
-            .select('id', 'name', 'email', 'password', 'admin')
+            .select('id', 'name', 'email', 'admin')
             .whereNull('deletedAt')
             .then(users => res.json(users))
             .catch(err => res.status(500).send(err))

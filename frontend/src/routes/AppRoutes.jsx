@@ -9,6 +9,8 @@ import Login from '../pages/loginpage/Login';
 import { Loader } from '../components/loading/Loader';
 import AdminPage from '../pages/adminpage/AdminPage';
 import Skeletons from '../components/skeleton/Skeleton';
+import Commerce from '../pages/commerce/Commerce';
+import EditPage from '../pages/editPage/EditPage';
 
 const AppRoutes = () => {
     const Private = ({children}) => {
@@ -35,6 +37,8 @@ const AppRoutes = () => {
                         <Route path='/loader'  element={<Loader />}/>
                         <Route exact path='/' element={<Private> <Home /> </Private>} />
                         <Route path='/adminpage' element={<Private> <AdminPage /> </Private>}/>
+                        <Route path='/artigos/commerce' element={<Private><Commerce/></Private>}></Route>
+                        <Route path='/aditpage' element={<Private><EditPage/></Private>}></Route>
                     </Routes>
             </AuthProvider>
         </Router>

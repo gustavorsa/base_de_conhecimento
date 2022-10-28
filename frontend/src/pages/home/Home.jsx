@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { PageTitle } from '../../components/title/PageTitle';
 import { baseApiUrll, api, getStats } from '../../config/global';
 
 const Home = () => {
@@ -23,6 +24,7 @@ const Home = () => {
 
   return (
     <div className='home'>
+      <PageTitle pageTitle='Home'/>
       <h1>Home</h1>
       <div>
         <p>stats: {stat.users}</p>
