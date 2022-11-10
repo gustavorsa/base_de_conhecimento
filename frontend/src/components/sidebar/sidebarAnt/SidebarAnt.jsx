@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import './SidebarAnt.css';
 import { Breadcrumb, Button, Col, Divider, Layout, Menu, Row } from 'antd';
-import ContentText from '../../content/ContentText';
 import Search from 'antd/lib/transfer/search';
 import * as BiIcons from 'react-icons/bi'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import EditorFroala from '../../editorwysiwyg/EditorFroala';
+import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
+import { convertFromRaw } from 'draft-js';
 
 const { Content, Sider } = Layout;
 
@@ -21,11 +23,11 @@ function getItem(label, key, children) {
 }
 
 const SidebarAnt = (props) => {
-  const {articlesList} = props
+  const {articlesList, texto} = props  
 
   useEffect(() => {
     {articlesList.length > 0 && articlesList.map((articlesList, index) => {
-      return console.log(articlesList.name, articlesList.id)
+      //return console.log(articlesList.name, articlesList.id)
       //items = [getItem(articlesList.name, articlesList.id)]
       //items = [getItem(articlesList.name, articlesList.id)]
     })}
@@ -47,8 +49,8 @@ const SidebarAnt = (props) => {
     ]),
   ];
 
-  console.log('sidebar',articlesList)
-  console.log('items', items)
+  //console.log('sidebar',articlesList)
+  //console.log('items', items)
 
   const onSearch = (value) => console.log(value);
 
@@ -77,9 +79,15 @@ const SidebarAnt = (props) => {
             <Divider orientation='left' style={{color: 'white'}}>
               Opções
             </Divider>
-            <LinkEdit to="/aditpage" style={{marginLeft: 16}}>
-              <BiIcons.BiPlusMedical/> Novo artigo
-            </LinkEdit>
+            {collapsed ? 
+              <LinkEdit to="/editpage" style={{marginLeft: 16}}>
+                <BiIcons.BiPlusMedical/>
+              </LinkEdit>
+            : 
+              <LinkEdit to="/editpage" style={{marginLeft: 16}}>
+                <BiIcons.BiPlusMedical/> Novo artigo
+              </LinkEdit>
+            }
             {collapsed ? '' : 
             <Menu 
               theme="dark" 
@@ -106,7 +114,7 @@ const SidebarAnt = (props) => {
               minHeight: 360,
             }}
           >
-            <ContentText />
+            {texto.content}
           </div>
         </Content>
       </Layout>

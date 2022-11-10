@@ -12,6 +12,8 @@ export const getStats = async () => {
     return api.get("/stats")
 }
 
+//USUARIOS
+
 export const getUser = async () => {
     return api.get("/users")
 }
@@ -20,9 +22,21 @@ export const postUser = (values) => {
     return api.post('/users', {values})
 }
 
+//ARTIGOS
+
+export const postArticles = async () => {
+    return api.post("/articles")
+}
+
 export const getArticles = async () => {
     return api.get("/articles")
 }
+
+export const getArticlesID = async (id) => {
+    return api.get(`/articles/${id}`)
+}
+
+//CATEGORIAS
 
 export const getCategories = async () => {
     return api.get("/categories")

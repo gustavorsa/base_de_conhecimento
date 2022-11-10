@@ -27,6 +27,7 @@ const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [edit, setEdit] = useState(false);
   const [user, setuser] = useState({});
+  const [userMap, setUserMap] = useState({id: 0, content: ''});
   const [requiredPassword, setRequiredPassword] = useState(true);
   const [form] = Form.useForm();
 
@@ -178,7 +179,7 @@ const AdminPage = () => {
         </Button>
         <Modal
           title="Usuário"
-          visible={edit}
+          open={edit}
           width={1220}
           onOk={cancelar}
           onCancel={cancelar}

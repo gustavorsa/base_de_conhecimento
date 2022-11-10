@@ -38,7 +38,7 @@ const AppRoutes = () => {
                         <Route exact path='/' element={<Private> <Home /> </Private>} />
                         <Route path='/adminpage' element={<Private> <AdminPage /> </Private>}/>
                         <Route path='/artigos/commerce' element={<Private><Commerce/></Private>}></Route>
-                        <Route path='/aditpage' element={<Private><EditPage/></Private>}></Route>
+                        <Route path='/editpage' element={<Private><EditPage/></Private>}></Route>
                     </Routes>
             </AuthProvider>
         </Router>
