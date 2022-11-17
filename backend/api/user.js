@@ -26,6 +26,7 @@ module.exports = app => {
         }
 
         user.password = encryptPassword(user.password)
+        user.createAt = new Date()
         delete user.confirmPassword
 
         if(user.id) {

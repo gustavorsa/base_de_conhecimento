@@ -24,8 +24,8 @@ export const postUser = (values) => {
 
 //ARTIGOS
 
-export const postArticles = async () => {
-    return api.post("/articles")
+export const postArticles = async (name, content, categoryId , userId) => {
+    return api.post("/articles", {name, content, categoryId , userId})
 }
 
 export const getArticles = async () => {

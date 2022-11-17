@@ -6,13 +6,16 @@ import Search from 'antd/lib/transfer/search';
 import * as BiIcons from 'react-icons/bi'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import EditorFroala from '../../editorwysiwyg/EditorFroala';
-import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
-import { convertFromRaw } from 'draft-js';
+import { Editor } from '@tinymce/tinymce-react';
 
 const { Content, Sider } = Layout;
 
 const LinkEdit = styled(Link)``
+
+const ContentText = styled.div `
+  padding: 10;
+  min-height: 360;
+`
 
 function getItem(label, key, children) {
   return {
@@ -23,38 +26,15 @@ function getItem(label, key, children) {
 }
 
 const SidebarAnt = (props) => {
-  const {articlesList, texto} = props  
+  const {articlesList, texto} = props
+  const [collapsed, setCollapsed] = useState(true);
 
-  useEffect(() => {
-    {articlesList.length > 0 && articlesList.map((articlesList, index) => {
-      //return console.log(articlesList.name, articlesList.id)
-      //items = [getItem(articlesList.name, articlesList.id)]
-      //items = [getItem(articlesList.name, articlesList.id)]
-    })}
-  }, []);
-  
-  const itemsUser = [
-    getItem('User', 'sub1', [
-      getItem('Tom', '3'),
-      getItem('Bill', '4'),
-      getItem('Alex', '5'),
-    ]),
-  ];
-
-  const items = [
-    getItem('User', 'sub1', [
-      getItem('Tom', '3'),
-      getItem('Bill', '4'),
-      getItem('Alex', '5'),
-    ]),
-  ];
-
-  //console.log('sidebar',articlesList)
-  //console.log('items', items)
+  const itemsList = articlesList.data?.map((item, index) => {
+    return getItem(item.name)
+  })
 
   const onSearch = (value) => console.log(value);
-
-  const [collapsed, setCollapsed] = useState(false);
+  
   return (
     <Layout
       style={{
@@ -65,10 +45,10 @@ const SidebarAnt = (props) => {
         collapsible 
         collapsed={collapsed} 
         onCollapse={(value) => setCollapsed(value)}
-        style={{
-            color: 'black',
-          }}
         width={364}
+        style={{
+          color: 'black',
+        }}
         >
             <div className='searchSide'>
               <Search
@@ -88,33 +68,37 @@ const SidebarAnt = (props) => {
                 <BiIcons.BiPlusMedical/> Novo artigo
               </LinkEdit>
             }
+            <Divider orientation='left' style={{color: 'white'}}>
+              Artigos
+            </Divider>
             {collapsed ? '' : 
             <Menu 
               theme="dark" 
               mode="inline" 
-              items={itemsUser} 
+              items={itemsList}
+              className={collapsed ? '' : 'MenuArticles'}
             />}
       </Sider>
       <Layout className="site-layout">
         <Content
           style={{margin: '16px 16px',}}
         >
-          <Breadcrumb
-            style={{
-              margin: '5px 0',
-            }}
-          >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             className="site-layout-background"
             style={{
-              padding: 24,
+              padding: 10,
               minHeight: 360,
             }}
-          >
-            {texto.content}
+          >          
+            <ContentText>
+                <p
+                  style={{
+                    padding: 10,
+                    minHeight: 360,
+                  }}
+                 dangerouslySetInnerHTML={{__html: texto.content}}
+                 className="textEditor"></p>
+            </ContentText>
           </div>
         </Content>
       </Layout>

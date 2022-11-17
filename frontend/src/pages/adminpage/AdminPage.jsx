@@ -56,7 +56,7 @@ const AdminPage = () => {
     .catch((response) => 
       notification.open({
       message: 'Cadastro De Usuário',
-      description: (response.response.data),
+      description: (response.response),
     }))
   }
 

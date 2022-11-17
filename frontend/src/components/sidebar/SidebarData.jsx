@@ -22,18 +22,21 @@ export const SidebarData = [
 
     subNav: [
       {
+        id: 2,
         title: 'Commerce',
         path: '/Artigos/commerce',
         icon: <IoIcons.IoIosPaper />,
         cName: 'sub-nav',
       },
       {
+        id: 3,
         title: 'Medicine',
         path: '/reports/reports2',
         icon: <IoIcons.IoIosPaper />,
         cName: 'sub-nav'
       },
       {
+        id: 4,
         title: 'Pharma',
         path: '/reports/reports3',
         icon: <IoIcons.IoIosPaper />

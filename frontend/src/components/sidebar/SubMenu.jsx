@@ -45,6 +45,10 @@ export const SubMenu = ({item}) => {
 
     const showSubnav = () => setSubnav(!subnav)
 
+    const localStore = (values) => {
+        localStorage.setItem('categoriePath', {values})
+    }
+
     return (
         <>
             <SidebarLink to={item.path} onClick={item.subNav && showSubnav}>

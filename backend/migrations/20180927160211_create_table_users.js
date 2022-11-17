@@ -6,6 +6,7 @@ exports.up = function (knex, Promise) {
         table.string('email').notNull().unique()
         table.string('password').notNull()
         table.boolean('admin').notNull().defaultTo(false)
+        table.timestamp('creatAt')
     })
 };
 

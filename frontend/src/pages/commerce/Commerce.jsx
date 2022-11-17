@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import SidebarAnt from '../../components/sidebar/sidebarAnt/SidebarAnt';
 import { PageTitle } from '../../components/title/PageTitle';
-import { getArticles, getArticlesID, getCategories } from '../../config/global';
-import './Commerce.css'
+import { getArticles, getArticlesID} from '../../config/global';
+import { Buffer } from "buffer";
+import './Commerce.css';
 
 const Commerce = () => {
-    const [articles, setArticles] = useState({});
+    const [articles, setarticles] = useState({});
+    const [articlesId, setArticlesId] = useState({});
 
     useEffect(() => {
       (async() => {
-        const response = await getArticlesID(44)
-        setArticles(response.data)
+        const articles = await getArticles()
+        const articlesID = await getArticlesID(50)
+        setarticles(articles.data)
+        setArticlesId(articlesID.data)
       })()
     }, []);
-
-    console.log('Artigos', articles.content)
+    
+    
+    /*const buffer = articles.content
+    console.log(buffer)*/
+    /*const text = buffer.toString("utf8")
+    console.log('Artigos', text)*/
+    //console.log('Commerce',articles.data)
 
     return (
       <div>
         <PageTitle pageTitle='Commerce' />
-        <SidebarAnt articlesList={articles} texto={articles}/>
+        <SidebarAnt articlesList={articles} texto={articlesId}/>
       </div>
     );
   };

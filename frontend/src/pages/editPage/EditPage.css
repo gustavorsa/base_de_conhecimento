@@ -1,3 +1,23 @@
 body {
     background: #F0F2F5;
 }
+
+.textAreaTitle {
+    width: 100%;
+    max-height: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.4;
+    resize: none;
+}
+
+.textAreaTitle::placeholder {
+    position: absolute;
+    top: 15px; 
+    left: 10px;
+}

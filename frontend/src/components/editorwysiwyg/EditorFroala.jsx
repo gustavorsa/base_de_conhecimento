@@ -13,6 +13,10 @@ import 'tinymce/icons/default';
 // Editor styles
 import 'tinymce/skins/ui/oxide/skin.min.css';
 
+
+// importing plugin resources
+import 'tinymce/plugins/emoticons/js/emojis';
+
 // importing the plugin js.
 // if you use a plugin that is not listed here the editor will fail to load
 import 'tinymce/plugins/advlist';
@@ -45,12 +49,6 @@ import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/visualchars';
 import 'tinymce/plugins/wordcount';
 
-// importing plugin resources
-import 'tinymce/plugins/emoticons/js/emojis';
-
-// Content styles, including inline UI like fake cursors
-/* eslint import/no-webpack-loader-syntax: off */
-//import contentCss from 'tinymce/skins/content/default/content.min.css';
 import contentUiCss from 'tinymce/skins/ui/oxide/content.min.css';
 
 export default function EditorFroala(props) {
