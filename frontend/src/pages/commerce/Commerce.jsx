@@ -12,12 +12,11 @@ const Commerce = () => {
     useEffect(() => {
       (async() => {
         const articles = await getArticles()
-        const articlesID = await getArticlesID(50)
+        const articlesID = await getArticlesID(75)
         setarticles(articles.data)
         setArticlesId(articlesID.data)
       })()
     }, []);
-    
     
     /*const buffer = articles.content
     console.log(buffer)*/

@@ -27,7 +27,6 @@ const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [edit, setEdit] = useState(false);
   const [user, setuser] = useState({});
-  const [userMap, setUserMap] = useState({id: 0, content: ''});
   const [requiredPassword, setRequiredPassword] = useState(true);
   const [form] = Form.useForm();
 
@@ -53,11 +52,13 @@ const AdminPage = () => {
       cancelar()
       setEdit(false)
     })
-    .catch((response) => 
+    .catch((response) => {
+      const resp = response
+      console.log(resp.response)
       notification.open({
       message: 'Cadastro De Usuário',
-      description: (response.response),
-    }))
+      description: 'Não deu certo',
+    })})
   }
 
   const loadUsers = async () => {

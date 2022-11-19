@@ -26,7 +26,11 @@ module.exports = app => {
         }
 
         user.password = encryptPassword(user.password)
-        user.createAt = new Date()
+        const dataAtual = new Date()
+        const dia = String(dataAtual.getDate()).padStart(2, '0')
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0')
+        const ano = dataAtual.getFullYear()
+        user.createAt = `${dia}/${mes}/${ano}`
         delete user.confirmPassword
 
         if(user.id) {
@@ -46,7 +50,7 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('users')
-            .select('id', 'name', 'email', 'admin')
+            .select('id', 'name', 'email', 'admin', 'createAt')
             .whereNull('deletedAt')
             .then(users => res.json(users))
             .catch(err => res.status(500).send(err))

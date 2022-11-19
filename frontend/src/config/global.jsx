@@ -32,7 +32,7 @@ export const getArticles = async () => {
     return api.get("/articles")
 }
 
-export const getArticlesID = async (id) => {
+export const getArticlesID = (id) => {
     return api.get(`/articles/${id}`)
 }
 

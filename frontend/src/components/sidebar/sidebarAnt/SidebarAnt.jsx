@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import './SidebarAnt.css';
-import { Breadcrumb, Button, Col, Divider, Layout, Menu, Row } from 'antd';
+import { Divider, Layout, Menu } from 'antd';
 import Search from 'antd/lib/transfer/search';
 import * as BiIcons from 'react-icons/bi'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Editor } from '@tinymce/tinymce-react';
+import { getArticlesID } from '../../../config/global';
 
 const { Content, Sider } = Layout;
 
@@ -17,10 +17,9 @@ const ContentText = styled.div `
   min-height: 360;
 `
 
-function getItem(label, key, children) {
+function getItem(label, key) {
   return {
     key,
-    children,
     label,
   };
 }
@@ -28,9 +27,25 @@ function getItem(label, key, children) {
 const SidebarAnt = (props) => {
   const {articlesList, texto} = props
   const [collapsed, setCollapsed] = useState(true);
+  const [artigo, setArtigo] = useState();
+  const [artigoId, setArtigoId] = useState(1);
+
+  const articleListId = (value) => {
+    setArtigoId(value.key)
+    console.log('sidebar', value.key)
+  }
+
+  useEffect(() => {
+    (async() => {
+      const articles = await getArticlesID(artigoId)
+      setArtigo(articles.data)
+    })()
+  }, [artigoId]);
 
   const itemsList = articlesList.data?.map((item, index) => {
-    return getItem(item.name)
+    return (
+      getItem(item.name, item.id)
+      )
   })
 
   const onSearch = (value) => console.log(value);
@@ -45,7 +60,7 @@ const SidebarAnt = (props) => {
         collapsible 
         collapsed={collapsed} 
         onCollapse={(value) => setCollapsed(value)}
-        width={364}
+        width={300}
         style={{
           color: 'black',
         }}
@@ -76,7 +91,7 @@ const SidebarAnt = (props) => {
               theme="dark" 
               mode="inline" 
               items={itemsList}
-              className={collapsed ? '' : 'MenuArticles'}
+              onClick={articleListId}
             />}
       </Sider>
       <Layout className="site-layout">
@@ -87,16 +102,24 @@ const SidebarAnt = (props) => {
             className="site-layout-background"
             style={{
               padding: 10,
-              minHeight: 360,
+              minHeight: 380,
             }}
           >          
             <ContentText>
+                <h1
+                  style={{
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    paddingLeft: 10
+                  }}
+                 dangerouslySetInnerHTML={{__html: artigo?.name}}
+                 className="textEditor"></h1>
                 <p
                   style={{
                     padding: 10,
                     minHeight: 360,
                   }}
-                 dangerouslySetInnerHTML={{__html: texto.content}}
+                 dangerouslySetInnerHTML={{__html: artigo?.content}}
                  className="textEditor"></p>
             </ContentText>
           </div>

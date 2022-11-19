@@ -13,6 +13,12 @@ module.exports = app => {
             res.status(400).send(msg)
         }
 
+        const dataAtual = new Date()
+        const dia = String(dataAtual.getDate()).padStart(2, '0')
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0')
+        const ano = dataAtual.getFullYear()
+        article.createAt = `${dia}/${mes}/${ano}`
+
         if(article.id) {
             app.db('articles')
                 .update(article)
@@ -45,8 +51,6 @@ module.exports = app => {
     }
 
     const get = async (req, res) => {
-        const page = req.query.page || 1
-
         const result = await app.db('articles').count('id').first()
 
         app.db('articles')

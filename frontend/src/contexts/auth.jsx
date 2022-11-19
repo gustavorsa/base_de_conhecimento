@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
-import { api, createSignin, postUser } from "../config/global";
+import { api, createSignin } from "../config/global";
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
